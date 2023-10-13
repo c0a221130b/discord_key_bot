@@ -1,10 +1,13 @@
+# discord.pyをインポート
 import discord
 from discord import app_commands
 
+#トークンが入ったevnファイルを読み込むためのモジュール
 import os
 from dotenv import load_dotenv
 load_dotenv()
 
+#借りた時間を表示させるためのモジュール
 import time
 from datetime import datetime
 from tzlocal import get_localzone
@@ -13,6 +16,7 @@ intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
+#起動時に実行される関数
 @client.event
 async def on_ready():
     print('-------------------')
@@ -45,6 +49,7 @@ async def on_ready():
     await tree.sync()
     
 
+#イントラクションを読み込むための関数
 @client.event
 async def on_interaction(inter:discord.Interaction):
     try:
@@ -53,7 +58,8 @@ async def on_interaction(inter:discord.Interaction):
             
     except KeyError:
         pass
-    
+
+#ボタンが押された時の関数
 async def on_button_click(inter:discord.Interaction):
     custom_id = inter.data['custom_id']
     if custom_id == 'key_rent':
@@ -80,5 +86,6 @@ async def on_button_click(inter:discord.Interaction):
             custom_id='key_return'
         )
         await inter.response.send_message(embed=embed, view=view)
-    
+
+#ボット起動のためのコード
 client.run(os.getenv('TOKEN'))
