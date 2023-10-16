@@ -30,16 +30,15 @@ async def on_ready():
     
     embed = discord.Embed(
         title = 'on ready',
-        description=datetime.now().strftime('%m/%d %H:%M'),
+        #description=datetime.now().strftime('%m/%d %H:%M'),
         color = 0x0000ff,
         description = '操作を選択してください'
     )
     
     button = discord.ui.Button(
         label='借りる',
-        style=discord.ButtonStyle.primary,
+        style=discord.ButtonStyle.success,
         custom_id='key_rent',
-        color=0x00ff00
     )
     view = discord.ui.View()
     view.add_item(button)
@@ -62,6 +61,8 @@ async def on_interaction(inter:discord.Interaction):
 #ボタンが押された時の関数
 async def on_button_click(inter:discord.Interaction):
     custom_id = inter.data['custom_id']
+    
+    #鍵を借りた時
     if custom_id == 'key_rent':
         embed = discord.Embed(
             title= '借りました',
@@ -70,21 +71,44 @@ async def on_button_click(inter:discord.Interaction):
         )
         embed.set_author(name=inter.user.name, icon_url=inter.user.avatar)
         
+        #部屋を開けるボタン
         button_open = discord.ui.Button(
             label='開ける',
-            style=discord.ButtonStyle.primary,
-            color=0xff0000,
+            style=discord.ButtonStyle.success,
             custom_id='room_open'
         )
         view = discord.ui.View()
         view.add_item(button_open)
         
+        #鍵を返すボタン
         button_return = discord.ui.Button(
             label='返す',
-            style=discord.ButtonStyle.primary,
-            color=0x00ff00,
+            style=discord.ButtonStyle.danger,
             custom_id='key_return'
         )
+        view.add_item(button_return)
+        await inter.response.send_message(embed=embed, view=view)
+    
+    #部屋を開けた時
+    elif custom_id == 'room_open':
+        embed = discord.Embed(
+            title = '開けました',
+            description = datetime.now().strftime('%m/%d %H:%M'),
+            color=0x0000ff
+        )
+        
+        embed.set_author(name=inter.user.name, icon_url=inter.user.avatar)
+        
+        #部屋を閉めるボタン
+        button_close = discord.ui.Button(
+            label = '閉める',
+            style = discord.ButtonStyle.success,
+            custom_id='room_close'
+        )
+        
+        view = discord.ui.View()
+        view.add_item(button_close)
+        
         await inter.response.send_message(embed=embed, view=view)
 
 #ボット起動のためのコード
