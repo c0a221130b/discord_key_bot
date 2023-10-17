@@ -17,51 +17,13 @@ client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
 
-class Views:
-    def Embed(self, title):
-        self.embed = discord.Embed(
-            title= title,
-            timestamp= datetime.now(),
-            color=0x0000ff
+def create_Embed(title):
+    self.embed = discord.Embed(
+        title= title,
+        timestamp= datetime.now(),
+        color=0x0000ff
         )
-        return self.embed
-    
-    @classmethod
-    def button_open(cls):
-        cls.button_open = discord.ui.Button(
-            label='開ける',
-            style=discord.ButtonStyle.success,
-            custom_id='room_open'
-        )
-        return cls.button_open
-    
-    @classmethod
-    def button_rent(cls):
-        cls.button_rent = discord.ui.Button(
-            label='借りる',
-            style=discord.ButtonStyle.success,
-            custom_id='key_rent',
-        )
-        return cls.button_rent
-    
-    @classmethod
-    def button_close(cls):
-        cls.button_close = discord.ui.Button(
-            label = '閉める',
-            style = discord.ButtonStyle.success,
-            custom_id='room_close'
-        )
-        return cls.button_close
-    
-    @classmethod
-    def button_return(cls):
-        cls.button_return = discord.ui.Button(
-            label='返す',
-            style=discord.ButtonStyle.danger,
-            custom_id='key_return'
-        )
-        return cls.button_return
-    
+    return embed
 #起動時に実行される関数
 @client.event
 async def on_ready():
@@ -106,8 +68,7 @@ async def on_button_click(inter:discord.Interaction):
     
     #鍵を借りた時
     if custom_id == 'key_rent':
-        em = Views()
-        embed = em.Embed("借りました")
+        embed = create_Embed("借りました")
         embed.set_author(name=inter.user.name, icon_url=inter.user.avatar)
         
         #部屋を開けるボタン
@@ -130,8 +91,7 @@ async def on_button_click(inter:discord.Interaction):
     
     #部屋を開けた時
     elif custom_id == 'room_open':
-        em = Views()
-        embed = em.Embed('開けました')
+        embed = create_Embed('開けました')
         embed.set_author(name=inter.user.display_name, icon_url=inter.user.avatar)
         
         #部屋を閉めるボタン
@@ -147,8 +107,7 @@ async def on_button_click(inter:discord.Interaction):
     
     #部屋を閉めた時
     elif custom_id == 'room_close':
-        em = Views()
-        embed = em.Embed('閉めました')
+        embed = create_Embed('閉めました')
         embed.set_author(name=inter.user.display_name, icon_url=inter.user.avatar)
         
         #鍵を返すボタン
@@ -172,8 +131,7 @@ async def on_button_click(inter:discord.Interaction):
     
     #鍵を返す時
     elif custom_id == 'key_return':
-        em = Views()
-        embed = em.Embed('返しました')
+        embed = create_Embed('返しました')
         embed.set_author(name=inter.user.display_name, icon_url=inter.user.avatar)
         
         #鍵を借りるボ
