@@ -18,7 +18,7 @@ tree = app_commands.CommandTree(client)
 
 
 def create_Embed(title):
-    self.embed = discord.Embed(
+    embed = discord.Embed(
         title= title,
         timestamp= datetime.now(),
         color=0x0000ff
